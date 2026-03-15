@@ -1,12 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-const reader = require('./csvReader.js')
-const validator = require('./jsonValidator.js')
+const reader = require('./dataEngine/csvReader.js')
 const dashboard = require('./webview/dahsboard.js')
-// import CSVReader 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const DatasetEngine = require('./dataEngine/dataEngine.js')
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -28,20 +25,21 @@ function activate(context) {
 			// asynchrounously wait for readcsv to execute
 			const data = await reader.readCsv(filePath);
 
+			if(!data || data.length === 0){
+				vscode.window.showErrorMessage("The CSV file appears to be empty.")
+				return;
+			}
 			// show message of data-parsed
 			vscode.window.showInformationMessage(`data parsed of length : ${data.length}`)
 
 			// stringify the top 5 data
-			console.log(JSON.stringify(data.slice(0,5),null,2))
+			// console.log(JSON.stringify(data.slice(0,5),null,2))
 			
-			
-			// const firstData = data[0]
-			// get the keys of the first object 
-			// const columns = Object.keys(firstData)
-
+			const engine = new DatasetEngine(data)
 			// Get JSON Formated Object of - DATA SUMMARY
-			const analysis = await validator.getFormatedData(data,filePath)
+			const analysis = engine.getFormatedData(filePath)
 
+			if(!analysis) throw new Error("Analysis failed to generate report.")
 			console.log(JSON.stringify(analysis,null,2))
 			// Create a WebView panel
 			const panel = vscode.window.createWebviewPanel(
@@ -55,7 +53,7 @@ function activate(context) {
 			// Send myVariable to the webview by injecting a script
 			panel.webview.html = dashboard.getWebViewContent(data,analysis);
 		}catch(err){
-			console.log(err)
+			vscode.window.showErrorMessage(err.message || "unExpected Error")
 		}
 	});
 	context.subscriptions.push(disposable);
