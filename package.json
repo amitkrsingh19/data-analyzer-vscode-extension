@@ -1,0 +1,46 @@
+{
+  "name": "csv-visualizer",
+  "displayName": "csv-visualizer",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.110.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:csv.validateCsv"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "csv.validateCsv",
+        "title": "CSV Validate"
+      },
+      {
+        "command": "csv.visualizeCsv",
+        "title": "CSV Visualize"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.110.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.3"
+  },
+  "dependencies": {
+    "chardet": "^2.1.1",
+    "papaparse": "^5.5.3",
+    "simple-statistics": "^7.8.9"
+  }
+}
