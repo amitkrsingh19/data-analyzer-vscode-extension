@@ -11,14 +11,14 @@ function getWebViewContent(data, analysis){
 		return `
 		<tr>
 			<td>${col}</td>
-			<td>${info.type}</td>
-			<td>${info.missing}</td>
-			<td>${info.unique}</td>
-			<td>${info.max}</td>
-			<td>${info.min}</td>
-			<td>${info.mean}</td>
-			<td>${info.median}</td>
-			<td>${info.mode}</td>
+			<td>${info.schema}</td>
+			<td>${info.stats.missing}</td>
+			<td>${info.stats.unique}</td>
+			<td>${info.stats.max}</td>
+			<td>${info.stats.min}</td>
+			<td>${info.stats.mean}</td>
+			<td>${info.stats.median}</td>
+			<td>${info.stats.mode}</td>
 		</tr>
 		`
 
@@ -134,11 +134,6 @@ function getWebViewContent(data, analysis){
 	<div>
 	File Encoding Type
 	<div class="stat">${analysis.summary.file_encoding}</div>
-	</div>
-
-	<div>
-	File Analysis :Confidence
-	<div class="stat">${analysis.summary.file_analysis.confidence}</div>
 	</div>
 
 	<div>
